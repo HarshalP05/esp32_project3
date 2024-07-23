@@ -40,27 +40,84 @@
             outline: 2px solid transparent;
             outline-offset: 2px;
         }
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .status-indicator.online {
+            background-color: green;
+        }
+        .status-indicator.offline {
+            background-color: red;
+        }
     </style>
 </head>
 <body>
     <h1>MQ6 Sensor Data</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>MQ6 Reading</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for entry in mq6_data %}
-            <tr>
-                <td>{{ entry.timestamp }}</td>
-                <td>{{ entry.mq6_reading }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div>
+        <h2>Status: <span id="status-indicator" class="status-indicator offline"></span></h2>
+    </div>
+    <h2>Gas Data</h2>
+    <div id="gas-table"></div>
 
     <a class="button-40" href="/plot_mq6">View MQ6 Plot</a>
+
+    <script>
+        let lastUpdate = null;
+        
+        async function fetchTableData() {
+            try {
+                const gasResponse = await fetch('/mq6_gas_data');
+                const gasData = await gasResponse.json();
+
+                const gasTable = document.createElement('table');
+                gasTable.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Gas Concentration (ppm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${gasData.map(row => `
+                            <tr>
+                                <td>${row[0]}</td>
+                                <td>${row[1]}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                document.getElementById('gas-table').appendChild(gasTable);
+
+                // Update last update time
+                lastUpdate = new Date();
+                document.getElementById('status-indicator').classList.remove('offline');
+                document.getElementById('status-indicator').classList.add('online');
+
+            } catch (error) {
+                console.error('Error fetching table data:', error);
+                document.getElementById('status-indicator').classList.remove('online');
+                document.getElementById('status-indicator').classList.add('offline');
+            }
+        }
+
+        function checkStatus() {
+            const now = new Date();
+            if (lastUpdate && (now - lastUpdate) > 60000) {  // 60 seconds
+                document.getElementById('status-indicator').classList.remove('online');
+                document.getElementById('status-indicator').classList.add('offline');
+            }
+        }
+
+        // Fetch table data and check status periodically
+        window.onload = function() {
+            fetchTableData();
+            setInterval(fetchTableData, 60000);  // Check for updates every minute
+            setInterval(checkStatus, 5000);     // Check status every 5 seconds
+        };
+    </script>
 </body>
 </html>

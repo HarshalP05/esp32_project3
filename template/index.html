@@ -1,166 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gruhrakshak</title>
-    <style>
-        .button-40 {
-            background-color: #111827;
-            border: 1px solid transparent;
-            border-radius: .75rem;
-            box-sizing: border-box;
-            color: #FFFFFF;
-            cursor: pointer;
-            flex: 0 0 auto;
-            font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            font-size: 1.125rem;
-            font-weight: 600;
-            line-height: 1.5rem;
-            padding: .75rem 1.2rem;
-            text-align: center;
-            text-decoration: none #6B7280 solid;
-            text-decoration-thickness: auto;
-            transition-duration: .2s;
-            transition-property: background-color, border-color, color, fill, stroke;
-            transition-timing-function: cubic-bezier(.4, 0, 0.2, 1);
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            width: auto;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Smart Home</title>
 
-        .button-40:hover {
-            background-color: #374151;
-        }
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 
-        .button-40:focus {
-            box-shadow: none;
-            outline: 2px solid transparent;
-            outline-offset: 2px;
-        }
+        <link
+        rel="stylesheet"
+        href="styles.css"/>
 
-        @media (min-width: 768px) {
-            .button-40 {
-                padding: .75rem 1.5rem;
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&family=Russo+One&family=Saira+Condensed:wght@300;400;700&family=Graduate&family=Sarpanch:wght@400;700&family=Shanti:wght@400;700&display=swap" rel="stylesheet">
+
+        <style>
+            .display-5{
+              font-family: 'Russo One', sans-serif;
+              font-weight: bolder;
             }
-        }
 
-        .main_container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+            .lead{
+                font-weight: 400;
+                font-family: 'Saira Condensed', sans-serif;
+                font-size: 25px;
+            }
+        </style>
+    </head>
 
-        .button_container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-            gap: 20px;
-        }
+    <body>
+        <!--Navbar-->
+        <section id="title" class="background-gradient">
+        <section id="navbar">
+            <nav class="navbar navbar-expand-lg " aria-label="Twelfth navbar example">
+                <div class="container-fluid">
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample10" aria-controls="navbarsExample10" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+          
+                  <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
+                    <ul class="navbar-nav" style="display: flex; gap:60px">
+                      <li class="nav-item-top">
+                        <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
+                      </li>
+                      <li class="nav-item-top">
+                        <a class="nav-link" href="#">About</a>
+                      </li>
+                      <li class="nav-item-top dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="">Sign Up</a></li>
+                          <li><a class="dropdown-item" href="#">Create Account</a></li>
+                          <li><a class="dropdown-item" href="#">Checkout Plans</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+        </section>
 
-        .overall_button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .status {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .status h2 {
-            margin-top: 0;
-        }
-
-        .status .device {
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .status .device span {
-            font-weight: bold;
-        }
-
-        .status .device .indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .status .device.online .indicator {
-            background-color: green;
-        }
-
-        .status .device.offline .indicator {
-            background-color: red;
-        }
-    </style>
-</head>
-<body>
-    <h1>Sensor Data Visualization</h1>
-    <div class="main_container">
-        <div class="button_container">
-            <button class="button-40" onclick="window.location.href='/plot_mq6'">View MQ6 Plot</button>
-            <button class="button-40" onclick="window.location.href='/plot_aht21'">View AHT21 Plot</button>
-            <button class="button-40" onclick="window.location.href='/mq6'">View MQ6 Data Table</button>
-            <button class="button-40" onclick="window.location.href='/aht21'">View AHT21 Data Table</button>
-        </div>
-        <div class="overall_button">
-            <button class="button-40" onclick="window.location.href='/overall'">Overall Sensor Data</button>
-        </div>
-        <div class="overall_button">
-            <button class="button-40" onclick="window.location.href='http://192.168.123.5'">Click Here For Camera Functions</button>
-        </div>
+        <!--Title-->
+        
+            <div class="container col-xxl-8 px-4 py-5">
+                <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                  <div class="col-10 col-sm-8 col-lg-6 team_name">
+                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">GRUHRAKSHAK</h1>
+                    <img src="images/home.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+                  </div>
+                  <div class="col-lg-6"> 
+        
+                    <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Smart Home Application</h1>
+                  
+                    <p class="lead">A smart home with a doorbell camera, temperature and humidity sensor, and gas sensor enhances security, comfort, and safety. The doorbell camera offers remote viewing of visitors, the temperature and humidity sensor adjusts climate control for comfort and efficiency, and the gas sensor alerts to harmful gases, ensuring a safe living environment.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                      <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
+                      <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </section>
         <div class="status" id="status-container">
-            <h2>Status of Devices</h2>
-            <div class="device" id="esp32_1_status">
-                <span class="indicator"></span>ESP32_1: <span id="esp32_1_status_text">Checking...</span>
+          <h2 class="pb-2 border-bottom">Status of Devices</h2>
+          <div class="device" id="esp32_1_status">
+              <span class="indicator"></span>ESP32_1: <span id="esp32_1_status_text">Checking...</span>
+              <img src="images/battery-icon.svg" width="20px" height="auto" alt="battery-health">
+          </div>
+          <div class="device" id="esp32_2_status">
+              <span class="indicator"></span>ESP32_2: <span id="esp32_2_status_text">Checking...</span>
+              <img src="images/battery-icon.svg" width="20px" height="auto" alt="battery-health">
+
             </div>
-            <div class="device" id="esp32_2_status">
-                <span class="indicator"></span>ESP32_2: <span id="esp32_2_status_text">Checking...</span>
+      </div>
+        <!--Features-->
+        <div class="container px-4 py-5" id="hanging-icons">
+          <h2 class="pb-2 border-bottom">Remarkable Features</h2>
+          <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start">
+              <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
+                    <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>
+                    <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                </svg>
             </div>
+              <div>
+                <h3 class="fs-2 text-body-emphasis">Camera Options</h3>
+                <p class="para">This module captures real-time video and images, allowing you to monitor and record activities in a specific area effectively. This module is compact and efficient, making it suitable for various surveillance needs.</p>
+                <a href="#" class="btn btn-primary bt-1">
+                  Click here to view Camera Function
+                </a>
+              </div>
+            </div>
+            <div class="col d-flex align-items-start">
+              <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-thermometer-half" viewBox="0 0 16 16">
+                    <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415"/>
+                    <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1"/>
+                </svg>
+            </div>
+              <div>
+                <h3 class="fs-2 text-body-emphasis">Temprature Plot</h3>
+                <p class="para">In a smart home, a temperature sensor monitors room temperatures, allowing automatic adjustments to heating or cooling systems and sending alerts if temperatures are outside set ranges.</p>
+                <a href="#" class="btn btn-primary bt-2">
+                  View Temperature Plot
+                </a>
+              </div>
+            </div>
+            <div class="col d-flex align-items-start">
+              <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
+                  <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="fs-2 text-body-emphasis">MQ-6 Data</h3>
+                <p class="para">An air quality database stores historical data on indoor and outdoor air quality levels, including gas concentrations detected by the MQ-6 sensor. It allows for trend analysis, monitoring changes over time, and making informed decisions about air quality management and ventilation in a smart home.</p>
+                <a href="#" class="btn btn-primary bt-6">
+                  View MQ6 data
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
 
-    <script>
-        function updateStatus() {
-            fetch('/esp32_status')
-                .then(response => response.json())
-                .then(data => {
-                    for (const [device, status] of Object.entries(data)) {
-                        const deviceElement = document.getElementById(`${device}_status`);
-                        const statusText = document.getElementById(`${device}_status_text`);
-                        const indicator = deviceElement.querySelector('.indicator');
+        <!-- 2nd Row -->
+        <div class="container px-4 py-5" id="hanging-icons">
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+          <div class="col d-flex align-items-start">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="fs-2 text-body-emphasis">MQ-6 Plot</h3>
+              <p class="para">A gas sensor in a smart home detects the presence and concentration of gases, such as carbon monoxide or methane. It alerts the system if gas levels exceed safe limits, helping to prevent leaks and ensure safety.</p>
+              <a href="#" class="btn btn-primary bt-4">
+                View MQ-6 Plot
+              </a>
+            </div>
+          </div>
+          <div class="col d-flex align-items-start">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="fs-2 text-body-emphasis">Temperature Data</h3>
+              <p class="para">A temperature and humidity database stores historical data on indoor and outdoor temperature and humidity levels. It allows for trend analysis, monitoring changes over time, and making informed decisions about climate control and energy usage in a smart home.</p>
+              <a href="#" class="btn btn-primary bt-5">
+                View Teperature data
+              </a>
+            </div>
+            
+          </div>
+          <div class="col d-flex align-items-start">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-telephone-forward" viewBox="0 0 16 16">
+                  <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zm10.762.135a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.293 4H9.5a.5.5 0 0 1 0-1h4.793l-1.647-1.646a.5.5 0 0 1 0-.708"/>
+              </svg>
+          </div>
+            <div>
+              <h3 class="fs-2 text-body-emphasis">Automatic Calling</h3>
+              <p class="para">Automatic calling in a smart home triggers phone calls or messages based on events like security alarms, absurd temperatures & gas leaks, alerting homeowners or emergency services for a prompt response.</p>
+              <a href="#" class="btn btn-primary bt-3">
+                Calling Functionalities
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col d-flex align-items-start">
+        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16">
+            <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1z"/>
+          </svg>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <h3 class="fs-2 text-body-emphasis">Overall Sensor Plot</h3>
+          <p class="para">This plot provides a comprehensive overview of environmental conditions and sensor readings, allowing for easy comparison and analysis of different data types over time. It helps in monitoring and managing various aspects of a smart home system effectively.</p>
+          <a href="#" class="btn btn-primary bt-7" style="align-self: center;">
+            View Overall Sensor Plot
+          </a>
+        </div>
+      </div>
+        <!--Example Dashboard-->
+        <section id="dash">
+          <h3>Readings Taken During Live Demo</h3>
+          <img src="images/graph.jpeg" height="600px" width="1200px"/>
+        </section>
+        
+        <!--Footer-->
+        <section id="footer" class="b">
+          <div class="container">
+            <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+              <div class="col mb-3">
+                <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+                  <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                </a>
+                <p class="text-body-secondary">© 2024</p>
+              </div>
+          
+              <div class="col mb-3">
+          
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Anchors</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Creator's Linkedin Profiles</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/HarshalP05/" class="nav-link p-0 text-body-secondary">Harshal Patil</a></li>
+                  <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/akshay-dhere-46b277310/" class="nav-link p-0 text-body-secondary">Akshay Dhere</a></li>
+                  <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/harshal-more-a45489306/" class="nav-link p-0 text-body-secondary">Harshal More</a></li>
+                  <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/tanmay-kanade-450a20232/" class="nav-link p-0 text-body-secondary">Tanmay Kanade</a></li>
+                  <li class="nav-item mb-2"><a href="https://github.com/HarshalP05/Smart-Home-Security" class="nav-link p-0 text-body-secondary">GitHub Repository</a></li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Social Media Handels</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Instagram</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">X.com</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">YouTube</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Telegram</a></li>
+                  <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Personal Websites</a></li>
+                </ul>
+              </div>
+            </footer>
+          </div>
+        </section>
 
-                        if (status === 'online') {
-                            statusText.textContent = 'Online';
-                            indicator.classList.add('online');
-                            indicator.classList.remove('offline');
-                        } else {
-                            statusText.textContent = 'Offline';
-                            indicator.classList.add('offline');
-                            indicator.classList.remove('online');
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching status:', error);
-                });
-        }
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-        // Update status every 5 seconds
-        setInterval(updateStatus, 5000);
-        // Initial update
-        updateStatus();
-    </script>
-</body>
+        <script src="script.js"></script>
+
+    </body>
 </html>
