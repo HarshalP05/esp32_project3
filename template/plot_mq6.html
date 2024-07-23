@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plot MQ6 Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>MQ6 Sensor Data Plot</h1>
+    <canvas id="mq6Chart" width="400" height="200"></canvas>
+
+    <script>
+        async function fetchMQ6Data() {
+            const response = await fetch('/mq6_data');
+            const mq6Data = await response.json();
+            return mq6Data;
+        }
+
+        function plotMQ6Data(mq6Data) {
+            const ctx = document.getElementById('mq6Chart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: mq6Data.map(item => new Date(item[0]).toLocaleTimeString()),
+                    datasets: [{
+                        label: 'MQ6 Reading',
+                        data: mq6Data.map(item => item[1]),
+                        borderColor: 'green',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'minute'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function initializePlot() {
+            const mq6Data = await fetchMQ6Data();
+            plotMQ6Data(mq6Data);
+        }
+
+        initializePlot();
+    </script>
+</body>
+</html>

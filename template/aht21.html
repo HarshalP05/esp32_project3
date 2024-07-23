@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHT21 Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-40 {
+            background-color: #111827;
+            border: 1px solid transparent;
+            border-radius: .75rem;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-size: 1.125rem;
+            font-weight: 600;
+            padding: .75rem 1.2rem;
+            text-align: center;
+            transition: background-color .2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .button-40:hover {
+            background-color: #374151;
+        }
+        .button-40:focus {
+            box-shadow: none;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .status-indicator.online {
+            background-color: green;
+        }
+        .status-indicator.offline {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>AHT21 Sensor Data</h1>
+    <div>
+        <h2>Status: <span id="status-indicator" class="status-indicator offline"></span></h2>
+    </div>
+    <h2>Temperature Data</h2>
+    <div id="temperature-table"></div>
+    
+    <h2>Humidity Data</h2>
+    <div id="humidity-table"></div>
+
+    <a class="button-40" href="/plot_aht21">View AHT21 Plot</a>
+
+    <script>
+        let lastUpdate = null;
+        
+        async function fetchTableData() {
+            try {
+                const temperatureResponse = await fetch('/aht21_temperature_data');
+                const temperatureData = await temperatureResponse.json();
+                
+                const humidityResponse = await fetch('/aht21_humidity_data');
+                const humidityData = await humidityResponse.json();
+
+                const temperatureTable = document.createElement('table');
+                temperatureTable.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Temperature (°C)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${temperatureData.map(row => `
+                            <tr>
+                                <td>${row[0]}</td>
+                                <td>${row[1]}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                document.getElementById('temperature-table').appendChild(temperatureTable);
+
+                const humidityTable = document.createElement('table');
+                humidityTable.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Humidity (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${humidityData.map(row => `
+                            <tr>
+                                <td>${row[0]}</td>
+                                <td>${row[1]}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                document.getElementById('humidity-table').appendChild(humidityTable);
+
+                // Update last update time
+                lastUpdate = new Date();
+                document.getElementById('status-indicator').classList.remove('offline');
+                document.getElementById('status-indicator').classList.add('online');
+
+            } catch (error) {
+                console.error('Error fetching table data:', error);
+                document.getElementById('status-indicator').classList.remove('online');
+                document.getElementById('status-indicator').classList.add('offline');
+            }
+        }
+
+        function checkStatus() {
+            const now = new Date();
+            if (lastUpdate && (now - lastUpdate) > 60000) {  // 60 seconds
+                document.getElementById('status-indicator').classList.remove('online');
+                document.getElementById('status-indicator').classList.add('offline');
+            }
+        }
+
+        // Fetch table data and check status periodically
+        window.onload = function() {
+            fetchTableData();
+            setInterval(fetchTableData, 60000);  // Check for updates every minute
+            setInterval(checkStatus, 5000);     // Check status every 5 seconds
+        };
+    </script>
+</body>
+</html>

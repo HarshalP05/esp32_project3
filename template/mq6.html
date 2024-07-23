@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQ6 Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-40 {
+            background-color: #111827;
+            border: 1px solid transparent;
+            border-radius: .75rem;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-size: 1.125rem;
+            font-weight: 600;
+            padding: .75rem 1.2rem;
+            text-align: center;
+            transition: background-color .2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .button-40:hover {
+            background-color: #374151;
+        }
+        .button-40:focus {
+            box-shadow: none;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MQ6 Sensor Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>MQ6 Reading</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in mq6_data %}
+            <tr>
+                <td>{{ entry.timestamp }}</td>
+                <td>{{ entry.mq6_reading }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="button-40" href="/plot_mq6">View MQ6 Plot</a>
+</body>
+</html>
